@@ -1,3 +1,16 @@
+def day1(input):
+    length = len(input)
+    return sum(
+        int(input[x])
+        for x in range(length)
+        if input[x] == input[(x + 1) % length]
+    )
+
+assert(day1('1122') == 3)
+assert(day1('1111') == 4)
+assert(day1('1234') == 0)
+assert(day1('91212129') == 9)
+
 day1_input = """
 367436765224262147416876392821832169781285655941123648172835986213848397566284241467793119283183835972359686446876651595
 915734132336167171121577524691918457577129283476247264385162111539468922414495231484194262592917889386218863347344978231
@@ -18,20 +31,4 @@ day1_input = """
 13241935211664248961527687778371971259654541239471766714469122213793348414477789271187324629397292446879752673
 """.replace('\n', '').strip()
 
-
-def day1(input):
-    sum = 0
-    ix = 0
-    while ix < len(input) - 1:
-        if input[ix] == input[ix + 1]:
-            sum += int(input[ix])
-        ix += 1
-    if input[0] == input[-1]:
-        sum += int(input[0])
-    return sum
-
-assert(day1('1122') == 3)
-assert(day1('1111') == 4)
-assert(day1('1234') == 0)
-assert(day1('91212129') == 9)
 print(day1(day1_input))
