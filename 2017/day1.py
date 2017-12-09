@@ -6,10 +6,6 @@ def part1(input):
         if input[x] == input[(x + 1) % length]
     )
 
-assert(part1('1122') == 3)
-assert(part1('1111') == 4)
-assert(part1('1234') == 0)
-assert(part1('91212129') == 9)
 
 part1_input = """
 367436765224262147416876392821832169781285655941123648172835986213848397566284241467793119283183835972359686446876651595
@@ -31,8 +27,6 @@ part1_input = """
 13241935211664248961527687778371971259654541239471766714469122213793348414477789271187324629397292446879752673
 """.replace('\n', '').strip()
 
-print(part1(part1_input))
-
 
 def part2(input):
     length = len(input)
@@ -42,11 +36,6 @@ def part2(input):
         if input[x] == input[(x + int(length / 2)) % length]
     )
 
-assert(part2('1212') == 6)
-assert(part2('1221') == 0)
-assert(part2('123425') == 4)
-assert(part2('123123') == 12)
-assert(part2('12131415') == 4)
 
 part2_input = """
 367436765224262147416876392821832169781285655941123648172835986213848397566284241467793119283183835972359686446876651595
@@ -68,4 +57,17 @@ part2_input = """
 13241935211664248961527687778371971259654541239471766714469122213793348414477789271187324629397292446879752673
 """.replace('\n', '').strip()
 
-print(part2(part2_input))
+
+if __name__ == '__main__':
+    assert (part1('1122') == 3)
+    assert (part1('1111') == 4)
+    assert (part1('1234') == 0)
+    assert (part1('91212129') == 9)
+    print(part1(part1_input))
+
+    assert (part2('1212') == 6)
+    assert (part2('1221') == 0)
+    assert (part2('123425') == 4)
+    assert (part2('123123') == 12)
+    assert (part2('12131415') == 4)
+    print(part2(part2_input))
