@@ -1,11 +1,10 @@
-def part1(input):
-    lines = [l.strip() for l in input.split('\n') if l.strip()]
-    sum = 0
-    for l in lines:
-        row = [int(i) for i in l.split(' ')]
-        row.sort()
-        sum += row[-1] - row[0]
-    return sum
+def part1(data):
+    rows = [
+        sorted(int(i) for i in l.strip().split(' '))
+        for l in data.split('\n')
+        if l.strip()
+    ]
+    return sum(r[-1] - r[0] for r in rows)
 
 
 part1_input = """
@@ -28,25 +27,29 @@ part1_input = """
 """.replace('\t', ' ')
 
 
-def part2(input):
-    rows = [[int(i) for i in l.strip().split(' ')] for l in input.split('\n') if l.strip()]
+def part2(data):
+    rows = [
+        [int(i) for i in l.strip().split(' ')]
+        for l in data.split('\n')
+        if l.strip()
+    ]
 
     def combine(row):
         if len(row) < 2:
             return
         for i in range(len(row) - 1):
             a, b = row[0], row[i + 1]
-            yield  (a, b) if a > b else (b, a)
+            yield (a, b) if a > b else (b, a)
         for pair in combine(row[1:]):
             yield pair
 
-    sum = 0
+    result = 0
     for r in rows:
         for pair in combine(r):
             if pair[0] % pair[1] == 0:
-                sum += pair[0] / pair[1]
+                result += pair[0] / pair[1]
                 break
-    return int(sum)
+    return int(result)
 
 
 part2_input = """
