@@ -32,9 +32,57 @@ def part1(data):
     return int(dist + (sqrt - 1) / 2)
 
 
+def spiral():
+    # return i,j in spiral
+    def ij_spiral(stop=0, _i=0, _j=0, _d=1):
+        if _d > stop > 0:
+            return
+        _i += 1  # move right
+        yield (_i, _j)
+        for i in range(_d * 2 - 1):
+            _j += 1  # move up
+            yield (_i, _j)
+        for i in range(_d * 2):
+            _i -= 1  # move left
+            yield (_i, _j)
+        for i in range(_d * 2):
+            _j -= 1  # move down
+            yield (_i, _j)
+        for i in range(_d * 2):
+            _i += 1  # move right
+            yield (_i, _j)
+        for pos in ij_spiral(stop, _i, _j, _d + 1):
+            yield pos
+
+    data = {
+        (0, 0): 1
+    }
+    yield 1
+    gen = (i for i in ij_spiral())
+    while True:
+        i, j = next(gen)
+        result = sum(data.get((i + di, j + dj), 0) for di, dj in ij_spiral(1))
+        data[(i, j)] = result
+        yield result
+
+
+def part2(data):
+    generator = spiral()
+    last = 0
+    while last < data:
+        last = next(generator)
+    return last
+
+
 if __name__ == '__main__':
     assert(part1(1) == 0)
     assert(part1(12) == 3)
     assert(part1(23) == 2)
     assert(part1(1024) == 31)
     print(part1(325489))
+
+    known = [1, 1, 2, 4, 5, 10, 11, 23, 25, 26, 54, 57, 59, 122, 133, 142, 147, 304, 330, 351, 362, 747, 806]
+    generator = spiral()
+    values = [next(generator) for _ in range(len(known))]
+    assert(known == values)
+    print(part2(325489))
