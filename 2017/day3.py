@@ -14,6 +14,10 @@ def part1(data):
     sqrt = math.ceil(math.sqrt(data))
     if sqrt % 2 == 0:
         sqrt += 1
+    # center always returns 0
+    if sqrt == 1:
+        return 0
+
     # takes the distance between the number and the nearest axis
     # 3  2  1  0  1  2  3
     # 2  2  1  0  1  2  2
@@ -22,13 +26,10 @@ def part1(data):
     # 1  1  1  0  1  1  1
     # 2  2  1  0  1  2  2
     # 3  2  1  0  1  2  3
-    if sqrt == 1:
-        dist = 0
-    else:
-        # distance to next diagonal counter clock wise
-        dist_diag = math.fabs(data - sqrt * sqrt) % (sqrt - 1)
-        # distance to axis
-        dist = int(math.fabs(dist_diag - int(sqrt / 2)))
+    # distance to next diagonal counter clock wise
+    dist_diag = math.fabs(data - sqrt * sqrt) % (sqrt - 1)
+    # distance to axis
+    dist = int(math.fabs(dist_diag - int(sqrt / 2)))
     return int(dist + (sqrt - 1) / 2)
 
 
@@ -48,7 +49,7 @@ def spiral():
                     yield (_i, _j)
             _d += 1
 
-    data = { (0, 0): 1 }
+    data = {(0, 0): 1}
     yield 1
     gen = ij_spiral()
     while True:
