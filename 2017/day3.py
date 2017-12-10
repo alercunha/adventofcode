@@ -48,9 +48,7 @@ def spiral():
                     yield (_i, _j)
             _d += 1
 
-    data = {
-        (0, 0): 1
-    }
+    data = { (0, 0): 1 }
     yield 1
     gen = ij_spiral()
     while True:
@@ -62,11 +60,7 @@ def spiral():
 
 
 def part2(data):
-    gen = spiral()
-    last = 0
-    while last < data:
-        last = next(gen)
-    return last
+    return next(i for i in spiral() if i > data)
 
 
 if __name__ == '__main__':
