@@ -67,10 +67,10 @@ def spiral():
 
 
 def part2(data):
-    generator = spiral()
+    gen = spiral()
     last = 0
     while last < data:
-        last = next(generator)
+        last = next(gen)
     return last
 
 
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     print(part1(325489))
 
     known = [1, 1, 2, 4, 5, 10, 11, 23, 25, 26, 54, 57, 59, 122, 133, 142, 147, 304, 330, 351, 362, 747, 806]
-    generator = spiral()
-    values = [next(generator) for _ in range(len(known))]
+    gen = spiral()
+    values = [next(gen) for _ in range(len(known))]
     assert(known == values)
     print(part2(325489))
