@@ -34,6 +34,11 @@ def part1(data):
 
 def spiral():
     # return i,j in spiral
+    # (-2, 2)  (-1, 2)  (0, 2)  (1, 2)  (2, 2)
+    # (-2, 1)  (-1, 1)  (0, 1)  (1, 1)  (2, 1)
+    # (-2, 0)  (-1, 0)  (0, 0)  (1, 0)  (2, 0)
+    # (-2,-1)  (-1,-1)  (0,-1)  (1,-1)  (2,-1)
+    # (-2,-2)  (-1,-2)  (0,-2)  (1,-2)  (2,-2)
     def ij_spiral(stop=0, _i=0, _j=0, _d=1):
         if _d > stop > 0:
             return
@@ -58,9 +63,10 @@ def spiral():
         (0, 0): 1
     }
     yield 1
-    gen = (i for i in ij_spiral())
+    gen = ij_spiral()
     while True:
         i, j = next(gen)
+        # use ij_spiral(1) to calculate nearby neighbors
         result = sum(data.get((i + di, j + dj), 0) for di, dj in ij_spiral(1))
         data[(i, j)] = result
         yield result
