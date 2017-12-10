@@ -1,9 +1,6 @@
 def uniques(line):
     words = sorted(line.split(' '))
-    for i in range(len(words) - 1):
-        if words[i] == words[i + 1]:
-            return False
-    return True
+    return not any(words[i] == words[i + 1] for i in range(len(words) - 1))
 
 
 def part1(input):
@@ -13,10 +10,7 @@ def part1(input):
 
 def has_anagram(line):
     words = sorted(''.join(sorted(w)) for w in line.split(' '))
-    for i in range(len(words) - 1):
-        if words[i] == words[i + 1]:
-            return True
-    return False
+    return any(words[i] == words[i + 1] for i in range(len(words) - 1))
 
 
 def part2(input):
@@ -44,4 +38,5 @@ if __name__ == '__main__':
         'oiii ioii iioi iiio'
     ]
     assert([has_anagram(i) for i in b] == [False, True, False, False, True])
+    assert(part2('\n'.join(b)) == 3)
     print(part2(day4_input))
