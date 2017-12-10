@@ -23,12 +23,14 @@ def part2(data):
         for pair in combine(row[1:]):
             yield pair
 
-    result = 0
-    for r in rows:
-        for pair in combine(r):
-            if pair[0] % pair[1] == 0:
-                result += pair[0] / pair[1]
-                break
+    result = sum(
+        next(
+            pair[0] / pair[1]
+            for pair in combine(r)
+            if pair[0] % pair[1] == 0
+        )
+        for r in rows
+    )
     return int(result)
 
 
