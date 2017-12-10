@@ -39,24 +39,15 @@ def spiral():
     # (-2, 0)  (-1, 0)  (0, 0)  (1, 0)  (2, 0)
     # (-2,-1)  (-1,-1)  (0,-1)  (1,-1)  (2,-1)
     # (-2,-2)  (-1,-2)  (0,-2)  (1,-2)  (2,-2)
-    def ij_spiral(stop=0, _i=0, _j=0, _d=1):
-        if _d > stop > 0:
+    def ij_spiral(depth=0, _i=0, _j=0, _d=1):
+        if _d > depth > 0:
             return
-        _i += 1  # move right
-        yield (_i, _j)
-        for i in range(_d * 2 - 1):
-            _j += 1  # move up
-            yield (_i, _j)
-        for i in range(_d * 2):
-            _i -= 1  # move left
-            yield (_i, _j)
-        for i in range(_d * 2):
-            _j -= 1  # move down
-            yield (_i, _j)
-        for i in range(_d * 2):
-            _i += 1  # move right
-            yield (_i, _j)
-        for pos in ij_spiral(stop, _i, _j, _d + 1):
+        # right *1, up d*2-1, left d*2, down d*2, right d*2
+        for di, dj, stop in [(1, 0, 1), (0, 1, _d * 2 - 1), (-1, 0, _d * 2), (0, -1, _d * 2), (1, 0, _d * 2)]:
+            for _ in range(stop):
+                _i, _j = _i + di, _j + dj
+                yield (_i, _j)
+        for pos in ij_spiral(depth, _i, _j, _d + 1):
             yield pos
 
     data = {
