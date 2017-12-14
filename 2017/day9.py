@@ -1,4 +1,4 @@
-def traverse(input, cache={}):
+def traverse(input, garbage=[]):
     stack = list()
     score = 0
     for pos in range(len(input)):
@@ -9,7 +9,7 @@ def traverse(input, cache={}):
             elif c == '!':
                 stack.append(c)
             else:
-                cache['garbage'] = cache.get('garbage', 0) + 1
+                garbage.append(c)
         else:
             if c == '{' or c == '<' or c == '!':
                 stack.append(c)
@@ -26,9 +26,9 @@ def part1(input):
 
 
 def part2(input):
-    cache = {}
-    list(traverse(input, cache))
-    return cache.get('garbage', 0)
+    garbage = []
+    list(traverse(input, garbage))
+    return len(garbage)
 
 
 if __name__ == '__main__':
