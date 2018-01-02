@@ -14,7 +14,24 @@ class Node:
         for _ in range(length):
             self.n = self.n.n
 
-reds = {
+    def size(self):
+        count = 0
+        curr = self
+        while curr.n:
+            count += 1
+            curr = curr.n
+        return count
+
+    def get_tuple(self):
+        if not self.n:
+            return ()
+        return (self.n.val,) + self.n.get_tuple()
+
+    def __nonzero__(self):
+        return True
+
+
+rules = {
     ('ne', 'sw'): [],
     ('ne', 'n', 'nw'): ['n'],
     ('ne', 'se', 's'): ['se'],
@@ -36,8 +53,16 @@ reds = {
 }
 
 
+def transform(values):
+    head = Node()
+    tail = head
+    for v in values:
+        tail = tail.insert(v)
+    return head
+
+
 def find_comb(head):
-    for k, v in reds.items():
+    for k, v in rules.items():
         if k[0] == head.val:
             count = 2
             curr = head
@@ -70,32 +95,10 @@ def parse(input):
     return transform([s.strip() for s in input.split(',') if s.strip()])
 
 
-def transform(values):
-    head = Node()
-    tail = head
-    for v in values:
-        tail = tail.insert(v)
-    return head
-
-
-def get_tuple(head):
-    if not head.n:
-        return ()
-    return (head.n.val,) + get_tuple(head.n)
-
-
-def size(head):
-    count = 0
-    while head.n:
-        count += 1
-        head = head.n
-    return count
-
-
 def part1(input):
     head = parse(input)
     shrink(head)
-    return size(head)
+    return head.size()
 
 
 def part2(input):
@@ -104,18 +107,17 @@ def part2(input):
 
 if __name__ == '__main__':
     assert(part1('ne, ne, ne') == 3)
-    assert(get_tuple(shrink(parse('ne, ne, ne'))) == ('ne', 'ne', 'ne'))
+    assert(shrink(parse('ne, ne, ne')).get_tuple() == ('ne', 'ne', 'ne'))
     assert(part1('ne, ne, sw, sw') == 0)
-    assert(get_tuple(shrink(parse('ne, ne, sw, sw'))) == ())
+    assert(shrink(parse('ne, ne, sw, sw')).get_tuple() == ())
     assert(part1('ne, ne, s, s') == 2)
-    assert(get_tuple(shrink(parse('ne, ne, s, s'))) == ('se', 'se'))
+    assert(shrink(parse('ne, ne, s, s')).get_tuple() == ('se', 'se'))
     assert(part1('ne, ne, s, s, s') == 3)
-    assert(get_tuple(shrink(parse('ne, ne, s, s, s'))) == ('se', 'se', 's'))
+    assert(shrink(parse('ne, ne, s, s, s')).get_tuple() == ('se', 'se', 's'))
     assert(part1('se, sw, se, sw, sw') == 3)
-    assert(get_tuple(shrink(parse('se, sw, se, sw, sw'))) == ('s', 's', 'sw'))
+    assert(shrink(parse('se, sw, se, sw, sw')).get_tuple() == ('s', 's', 'sw'))
     assert(part1('se, s, sw, sw, s, se') == 4)
-    assert(get_tuple(shrink(parse('se, s, sw, sw, s, se'))) == ('s', 's', 's', 's'))
+    assert(shrink(parse('se, s, sw, sw, s, se')).get_tuple() == ('s', 's', 's', 's'))
     with open('day11.in', 'r') as fh:
         data = fh.read().strip()
-    print(size(parse(data)))
     print(part1(data))
