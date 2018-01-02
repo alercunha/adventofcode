@@ -31,26 +31,26 @@ class Node:
         return True
 
 
-rules = {
-    ('ne', 'sw'): [],
-    ('ne', 'n', 'nw'): ['n'],
-    ('ne', 'se', 's'): ['se'],
-    ('se', 'nw'): [],
-    ('se', 's', 'sw'): ['s'],
-    ('se', 'ne', 'n'): ['ne'],
-    ('nw', 'se'): [],
-    ('nw', 'n', 'ne'): ['n'],
-    ('nw', 'sw', 's'): ['sw'],
-    ('sw', 'ne'): [],
-    ('sw', 's', 'se'): ['s'],
-    ('sw', 'nw', 'n'): ['nw'],
-    ('n', 's'): [],
-    ('n', 'ne', 'se'): ['ne'],
-    ('n', 'nw', 'sw'): ['nw'],
-    ('s', 'n'): [],
-    ('s', 'se', 'ne'): ['se'],
-    ('s', 'sw', 'nw'): ['sw'],
-}
+rules = [
+    (('ne', 'sw'), []),
+    (('ne', 'n', 'nw'), ['n']),
+    (('ne', 'se', 's'), ['se']),
+    (('se', 'nw'), []),
+    (('se', 's', 'sw'), ['s']),
+    (('se', 'ne', 'n'), ['ne']),
+    (('nw', 'se'), []),
+    (('nw', 'n', 'ne'), ['n']),
+    (('nw', 'sw', 's'), ['sw']),
+    (('sw', 'ne'), []),
+    (('sw', 's', 'se'), ['s']),
+    (('sw', 'nw', 'n'), ['nw']),
+    (('n', 's'), []),
+    (('n', 'ne', 'se'), ['ne']),
+    (('n', 'nw', 'sw'), ['nw']),
+    (('s', 'n'), []),
+    (('s', 'se', 'ne'), ['se']),
+    (('s', 'sw', 'nw'), ['sw']),
+]
 
 
 def transform(values):
@@ -62,13 +62,14 @@ def transform(values):
 
 
 def find_comb(head):
-    for k, v in rules.items():
+    for k, v in rules:
         if k[0] == head.val:
             count = 2
             curr = head
-            while len(k) > 2 and curr.n and curr.next_val() == k[1]:
-                count += 1
-                curr = curr.n
+            if len(k) > 2:
+                while curr.next_val() == k[1]:
+                    count += 1
+                    curr = curr.n
             if curr.next_val() == k[-1]:
                 return count, v
     return 0, []
@@ -102,8 +103,16 @@ def part1(input):
 
 
 def part2(input):
-    return 0
+    vals = [s.strip() for s in input.split(',') if s.strip()]
+    top = 0
 
+    while top < len(vals):
+        head = transform(vals)
+        top = max(shrink(head).size(), top)
+        vals = vals[0:-1]
+        print('{0}:{1}'.format(top, len(vals)))
+
+    return top
 
 if __name__ == '__main__':
     assert(part1('ne, ne, ne') == 3)
@@ -118,6 +127,16 @@ if __name__ == '__main__':
     assert(shrink(parse('se, sw, se, sw, sw')).get_tuple() == ('s', 's', 'sw'))
     assert(part1('se, s, sw, sw, s, se') == 4)
     assert(shrink(parse('se, s, sw, sw, s, se')).get_tuple() == ('s', 's', 's', 's'))
+
     with open('day11.in', 'r') as fh:
         data = fh.read().strip()
     print(part1(data))
+
+    assert(part2('ne, ne, ne') == 3)
+    assert(part2('ne, ne, sw, sw') == 2)
+    assert(part2('ne, ne, s, s') == 2)
+    assert(part2('ne, ne, s, s, s') == 3)
+    assert(part2('se, sw, se, sw, sw') == 3)
+    assert(part2('se, s, sw, sw, s, se') == 4)
+
+    print(part2(data))
