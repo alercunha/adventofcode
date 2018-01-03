@@ -10,10 +10,10 @@ class Node(object):
         return self._n
 
     @n.setter
-    def n(self, value):
-        self._n = value
-        if value:
-            value.p = self
+    def n(self, next_node):
+        self._n = next_node
+        if self._n:
+            self._n.p = self
 
     def next_val(self):
         return self.n.val if self.n else None
@@ -57,24 +57,24 @@ class Node(object):
 
 
 rules = [
-    (('ne', 'sw'), []),
-    (('ne', 'n', 'nw'), ['n']),
-    (('ne', 'se', 's'), ['se']),
-    (('se', 'nw'), []),
-    (('se', 's', 'sw'), ['s']),
-    (('se', 'ne', 'n'), ['ne']),
-    (('nw', 'se'), []),
-    (('nw', 'n', 'ne'), ['n']),
-    (('nw', 'sw', 's'), ['sw']),
-    (('sw', 'ne'), []),
-    (('sw', 's', 'se'), ['s']),
-    (('sw', 'nw', 'n'), ['nw']),
-    (('n', 's'), []),
-    (('n', 'ne', 'se'), ['ne']),
-    (('n', 'nw', 'sw'), ['nw']),
-    (('s', 'n'), []),
-    (('s', 'se', 'ne'), ['se']),
-    (('s', 'sw', 'nw'), ['sw']),
+    (['ne', 'sw'], []),
+    (['ne', 'n', 'nw'], ['n']),
+    (['ne', 'se', 's'], ['se']),
+    (['se', 'nw'], []),
+    (['se', 's', 'sw'], ['s']),
+    (['se', 'ne', 'n'], ['ne']),
+    (['nw', 'se'], []),
+    (['nw', 'n', 'ne'], ['n']),
+    (['nw', 'sw', 's'], ['sw']),
+    (['sw', 'ne'], []),
+    (['sw', 's', 'se'], ['s']),
+    (['sw', 'nw', 'n'], ['nw']),
+    (['n', 's'], []),
+    (['n', 'ne', 'se'], ['ne']),
+    (['n', 'nw', 'sw'], ['nw']),
+    (['s', 'n'], []),
+    (['s', 'se', 'ne'], ['se']),
+    (['s', 'sw', 'nw'], ['sw']),
 ]
 
 
