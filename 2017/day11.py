@@ -1,18 +1,39 @@
-class Node:
+class Node(object):
     def __init__(self, n=None, val=None):
+        self._n = None
+        self.p = None
         self.n = n
         self.val = val
 
+    @property
+    def n(self):
+        return self._n
+
+    @n.setter
+    def n(self, value):
+        self._n = value
+        if value:
+            value.p = self
+
     def next_val(self):
         return self.n.val if self.n else None
+
+    def prev_val(self):
+        return self.p.val if self.p else None
 
     def insert(self, val):
         self.n = Node(self.n, val)
         return self.n
 
     def jump(self, length):
-        for _ in range(length):
-            self.n = self.n.n
+        curr = self
+        if length == 0:
+            return self
+        for _ in range(abs(length)):
+            curr = curr.n if length > 0 else curr.p
+            if curr is None:
+                return None
+        return curr
 
     def size(self):
         count = 0
@@ -22,10 +43,14 @@ class Node:
             curr = curr.n
         return count
 
+    def __iter__(self):
+        curr = self
+        while curr.n:
+            yield curr.n.val
+            curr = curr.n
+
     def get_tuple(self):
-        if not self.n:
-            return ()
-        return (self.n.val,) + self.n.get_tuple()
+        return tuple(self)
 
     def __nonzero__(self):
         return True
@@ -80,12 +105,13 @@ def shrink(head):
     while found:
         curr = head
         found = False
-        while curr is not None and curr.n is not None:
-            count, result = find_comb(curr.n)
+        while curr and curr.n:
+            count, replace = find_comb(curr.n)
             if count > 0:
-                curr.jump(count)
-                for _ in range(len(result) * (count - 1)):
-                    curr.insert(result[0])
+                curr.n = curr.jump(count).n
+                for _ in range(len(replace) * (count - 1)):
+                    curr.insert(replace[0])
+                curr = curr.jump(-2) or head
                 found = True
             else:
                 curr = curr.n
@@ -127,6 +153,8 @@ if __name__ == '__main__':
     assert(shrink(parse('se, sw, se, sw, sw')).get_tuple() == ('s', 's', 'sw'))
     assert(part1('se, s, sw, sw, s, se') == 4)
     assert(shrink(parse('se, s, sw, sw, s, se')).get_tuple() == ('s', 's', 's', 's'))
+    assert(part1('n, ne, ne, se, s') == 3)
+    assert(shrink(parse('n, ne, ne, se, s')).get_tuple() == ('ne', 'ne', 'se'))
 
     with open('day11.in', 'r') as fh:
         data = fh.read().strip()
