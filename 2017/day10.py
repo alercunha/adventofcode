@@ -24,12 +24,16 @@ def part1(input1, input2):
     return result[0] * result[1]
 
 
-def part2(input):
+def knot_hash(input):
     data = list(range(256))
     lengths = [ord(i) for i in input] + [17, 31, 73, 47, 23]
     result = knot_hash_round(data, lengths, 64)
     dense_hash = [reduce(lambda x, y: x ^ y, result[i * 16:(i + 1) * 16]) for i in range(16)]
     return ''.join(format(i, '02x') for i in dense_hash)
+
+
+def part2(input):
+    return knot_hash(input)
 
 
 if __name__ == '__main__':
