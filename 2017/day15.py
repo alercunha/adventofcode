@@ -1,16 +1,4 @@
-def gen1(factor, val, rounds):
-    for _ in range(rounds):
-        val = (val * factor) % 2147483647
-        yield val
-
-
-def part1(factorA, startA, factorB, startB, rounds):
-    genA = gen1(factorA, startA, rounds)
-    genB = gen1(factorB, startB, rounds)
-    return sum(1 for a in genA if bin(a)[-16:] == bin(next(genB))[-16:])
-
-
-def gen2(factor, val, mult, rounds):
+def gen(factor, val, mult, rounds):
     count = 0
     while count < rounds:
         val = (val * factor) % 2147483647
@@ -19,10 +7,18 @@ def gen2(factor, val, mult, rounds):
             count += 1
 
 
-def part2(factorA, startA, multA, factorB, startB, multB, rounds):
-    genA = gen2(factorA, startA, multA, rounds)
-    genB = gen2(factorB, startB, multB, rounds)
+def judge(factorA, startA, multA, factorB, startB, multB, rounds):
+    genA = gen(factorA, startA, multA, rounds)
+    genB = gen(factorB, startB, multB, rounds)
     return sum(1 for a in genA if bin(a)[-16:] == bin(next(genB))[-16:])
+
+
+def part1(factorA, startA, factorB, startB, rounds):
+    return judge(factorA, startA, 1, factorB, startB, 1, rounds)
+
+
+def part2(factorA, startA, multA, factorB, startB, multB, rounds):
+    return judge(factorA, startA, multA, factorB, startB, multB, rounds)
 
 
 if __name__ == '__main__':
