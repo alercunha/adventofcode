@@ -44,58 +44,30 @@ func part1(input string) interface{} {
 
 func part2(input string) interface{} {
 	parts := strings.Split(input, "\n")
-	letterCountMap := make(map[string]map[rune]int)
-	for _, part := range parts {
-		letterCount := make(map[rune]int)
-		runes := []rune(part)
-		for _, r := range runes {
-			v, ok := letterCount[r]
-			if ok {
-				letterCount[r] = v + 1
-			} else {
-				letterCount[r] = 1
-			}
-		}
-		letterCountMap[part] = letterCount
-	}
-	return findAnswer(0, parts, letterCountMap)
+	return findAnswer(0, parts)
 }
 
-func findAnswer(index int, parts []string, letterCountMap map[string]map[rune]int) string {
+func findAnswer(index int, parts []string) string {
 	if index == len(parts) - 1 {
 		fmt.Println("Could not find an answer")
 		os.Exit(1)
 	}
 	part1 := parts[index]
-	letterCount1 := letterCountMap[part1]
 	for i := index + 1; i < len(parts); i++ {
 		part2 := parts[i]
-		letterCount2 := letterCountMap[part2]
-		failed := 0
-		for k, v1 := range letterCount1 {
-			v2, ok := letterCount2[k]
-			if ok && v1 != v2 {
-				failed++
-			}
-			if failed > 1 {
-				break
+		runes1 := []rune(part1)
+		runes2 := []rune(part2)
+		runes3 := []rune{}
+		for i := 0; i < len(runes1); i++ {
+			if (runes1[i] == runes2[i]) {
+				runes3 = append(runes3, runes1[i])
 			}
 		}
-		if failed < 2 {
-			runes1 := []rune(part1)
-			runes2 := []rune(part2)
-			runes3 := []rune{}
-			for i := 0; i < len(runes1); i++ {
-				if (runes1[i] == runes2[i]) {
-					runes3 = append(runes3, runes1[i])
-				}
-			}
-			if len(runes3) == len(runes1) - 1 {
-				return string(runes3)
-			}
+		if len(runes3) == len(runes1) - 1 {
+			return string(runes3)
 		}
 	}
-	return findAnswer(index + 1, parts, letterCountMap)
+	return findAnswer(index + 1, parts)
 }
 
 func assert(f func(string)interface{}, input string, expected interface{}) {
