@@ -40,6 +40,31 @@ func part1(input string) int {
 	return result
 }
 
+func part2(input string) int {
+	result := 0
+	set := make(map[int]bool)
+	for {
+		for _, part := range parse(input) {
+			set[result] = true
+			runes := []rune(part)
+			val, err := strconv.Atoi(string(runes[1:]))
+			if err != nil {
+				fmt.Printf("Error converting number: %s\n", err)
+				os.Exit(1)
+			}
+			if runes[0] == '+' {
+				result = result + val
+			} else {
+				result = result - val
+			}
+			_, ok := set[result]
+			if ok {
+				return result
+			}
+		}
+	}
+}
+
 func assert(f func(string)int, input string, expected int) {
 	result := f(input)
 	if result != expected {
