@@ -25,17 +25,12 @@ func parse(input string) []string {
 func part1(input string) int {
 	result := 0
 	for _, part := range parse(input) {
-		runes := []rune(part)
-		val, err := strconv.Atoi(string(runes[1:]))
+		val, err := strconv.Atoi(part)
 		if err != nil {
 			fmt.Printf("Error converting number: %s\n", err)
 			os.Exit(1)
 		}
-		if runes[0] == '+' {
-			result = result + val
-		} else {
-			result = result - val
-		}
+		result += val
 	}
 	return result
 }
@@ -46,17 +41,12 @@ func part2(input string) int {
 	for {
 		for _, part := range parse(input) {
 			set[result] = true
-			runes := []rune(part)
-			val, err := strconv.Atoi(string(runes[1:]))
+			val, err := strconv.Atoi(part)
 			if err != nil {
 				fmt.Printf("Error converting number: %s\n", err)
 				os.Exit(1)
 			}
-			if runes[0] == '+' {
-				result = result + val
-			} else {
-				result = result - val
-			}
+			result += val
 			_, ok := set[result]
 			if ok {
 				return result
