@@ -73,7 +73,7 @@ func findAnswer(index int, parts []string) string {
 func assert(f func(string)interface{}, input string, expected interface{}) {
 	result := f(input)
 	if result != expected {
-		fmt.Printf("Assert failed: got [%d] expecting [%d]\n", result, expected)
+		fmt.Println("Assert failed: got [", result, "] expecting [", expected, "]")
 		os.Exit(1)
 	}	
 }
@@ -81,7 +81,7 @@ func assert(f func(string)interface{}, input string, expected interface{}) {
 func readFile(path string) string {
     b, err := ioutil.ReadFile(path)
     if err != nil {
-    	fmt.Printf("Error reading file: %s\n", err)
+        fmt.Println("Error reading file: ", err)
     	os.Exit(1)
     }
     return string(b)
