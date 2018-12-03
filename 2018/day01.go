@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strings"
-	"strconv"
 	"io/ioutil"
+	"os"
+	"strconv"
+	"strings"
 )
 
 func parse(input string) []string {
@@ -55,21 +55,21 @@ func part2(input string) int {
 	}
 }
 
-func assert(f func(string)int, input string, expected int) {
+func assert(f func(string) int, input string, expected int) {
 	result := f(input)
 	if result != expected {
 		fmt.Printf("Assert failed: got [%d] expecting [%d]\n", result, expected)
 		os.Exit(1)
-	}	
+	}
 }
 
 func readFile(path string) string {
-    b, err := ioutil.ReadFile(path)
-    if err != nil {
-    	fmt.Printf("Error reading file: %s\n", err)
-    	os.Exit(1)
-    }
-    return string(b)
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Printf("Error reading file: %s\n", err)
+		os.Exit(1)
+	}
+	return string(b)
 }
 
 func main() {

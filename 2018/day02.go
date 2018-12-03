@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
-	"io/ioutil"
 )
 
 func find(count int, m map[rune]int) bool {
@@ -16,14 +16,13 @@ func find(count int, m map[rune]int) bool {
 	return false
 }
 
-
 func part1(input string) interface{} {
-    parts := strings.Split(input, "\n")
-    twoCount := 0
-    threeCount := 0
-    for _, part := range parts {
-    	letterCount := make(map[rune]int)
-    	runes := []rune(part)
+	parts := strings.Split(input, "\n")
+	twoCount := 0
+	threeCount := 0
+	for _, part := range parts {
+		letterCount := make(map[rune]int)
+		runes := []rune(part)
 		for _, r := range runes {
 			v, ok := letterCount[r]
 			if ok {
@@ -38,8 +37,8 @@ func part1(input string) interface{} {
 		if find(3, letterCount) {
 			threeCount++
 		}
-    }
-    return twoCount * threeCount
+	}
+	return twoCount * threeCount
 }
 
 func part2(input string) interface{} {
@@ -48,7 +47,7 @@ func part2(input string) interface{} {
 }
 
 func findAnswer(index int, parts []string) string {
-	if index == len(parts) - 1 {
+	if index == len(parts)-1 {
 		fmt.Println("Could not find an answer")
 		os.Exit(1)
 	}
@@ -59,32 +58,32 @@ func findAnswer(index int, parts []string) string {
 		runes2 := []rune(part2)
 		runes3 := []rune{}
 		for i := 0; i < len(runes1); i++ {
-			if (runes1[i] == runes2[i]) {
+			if runes1[i] == runes2[i] {
 				runes3 = append(runes3, runes1[i])
 			}
 		}
-		if len(runes3) == len(runes1) - 1 {
+		if len(runes3) == len(runes1)-1 {
 			return string(runes3)
 		}
 	}
-	return findAnswer(index + 1, parts)
+	return findAnswer(index+1, parts)
 }
 
-func assert(f func(string)interface{}, input string, expected interface{}) {
+func assert(f func(string) interface{}, input string, expected interface{}) {
 	result := f(input)
 	if result != expected {
 		fmt.Println("Assert failed: got [", result, "] expecting [", expected, "]")
 		os.Exit(1)
-	}	
+	}
 }
 
 func readFile(path string) string {
-    b, err := ioutil.ReadFile(path)
-    if err != nil {
-        fmt.Println("Error reading file: ", err)
-    	os.Exit(1)
-    }
-    return string(b)
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println("Error reading file: ", err)
+		os.Exit(1)
+	}
+	return string(b)
 }
 
 func main() {
