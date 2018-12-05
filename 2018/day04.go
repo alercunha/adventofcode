@@ -83,12 +83,14 @@ func findMax(values [60]int) (int, int) {
 	return idx, max
 }
 
-func part1(input string) interface{} {
+type compare func(entry1 *Entry, entry2 *Entry) bool
+
+func findGuard(input string, compareFunc compare) int {
 	rows := strings.Split(input, "\n")
 	entries := parseEntries(rows)
 	combined := combineEntries(entries)
 	sort.Slice(combined, func(i, j int) bool {
-		return combined[i].asleepSum > combined[j].asleepSum
+		return compareFunc(combined[i], combined[j])
 	})	
 	//for _, entry := range combined {
 	//	fmt.Println(*entry)
@@ -97,18 +99,18 @@ func part1(input string) interface{} {
 	return idx * combined[0].id
 }
 
+func part1(input string) interface{} {
+	f := func(entry1 *Entry, entry2 *Entry) bool { 
+		return entry1.asleepSum > entry2.asleepSum 
+	}
+	return findGuard(input, f)
+}
+
 func part2(input string) interface{} {
-	rows := strings.Split(input, "\n")
-	entries := parseEntries(rows)
-	combined := combineEntries(entries)
-	sort.Slice(combined, func(i, j int) bool {
-		return combined[i].asleepMostFrequently > combined[j].asleepMostFrequently
-	})
-	//for _, entry := range combined {
-	//	fmt.Println(*entry)
-	//}
-	idx, _ := findMax(combined[0].asleep)
-	return idx * combined[0].id
+	f := func(entry1 *Entry, entry2 *Entry) bool { 
+		return entry1.asleepMostFrequently > entry2.asleepMostFrequently
+	}
+	return findGuard(input, f)
 }
 
 func assert(f func(string) interface{}, input string, expected interface{}) {
