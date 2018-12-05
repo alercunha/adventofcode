@@ -14,6 +14,7 @@ type Entry struct {
 	date string
 	asleep [60]int
 	asleepSum int
+	asleepMostFrequently int
 }
 
 func parseEntries(rows []string) []*Entry {
@@ -64,12 +65,13 @@ func combineEntries(entries []*Entry) []*Entry {
 	}
 	combined := []*Entry{}
 	for _, v := range entryMap {
+		_, v.asleepMostFrequently = findMax(v.asleep)
 		combined = append(combined, v)
 	}
 	return combined
 }
 
-func findMaxIndex(values [60]int) int {
+func findMax(values [60]int) (int, int) {
 	max := 0
 	idx := 0
 	for i := 0; i < len(values); i++ {
@@ -78,7 +80,7 @@ func findMaxIndex(values [60]int) int {
 			idx = i
 		}
 	}
-	return idx
+	return idx, max
 }
 
 func part1(input string) interface{} {
@@ -91,11 +93,22 @@ func part1(input string) interface{} {
 	//for _, entry := range combined {
 	//	fmt.Println(*entry)
 	//}
-	return findMaxIndex(combined[0].asleep) * combined[0].id
+	idx, _ := findMax(combined[0].asleep)
+	return idx * combined[0].id
 }
 
 func part2(input string) interface{} {
-	return 0
+	rows := strings.Split(input, "\n")
+	entries := parseEntries(rows)
+	combined := combineEntries(entries)
+	sort.Slice(combined, func(i, j int) bool {
+		return combined[i].asleepMostFrequently > combined[j].asleepMostFrequently
+	})
+	//for _, entry := range combined {
+	//	fmt.Println(*entry)
+	//}
+	idx, _ := findMax(combined[0].asleep)
+	return idx * combined[0].id
 }
 
 func assert(f func(string) interface{}, input string, expected interface{}) {
@@ -138,4 +151,7 @@ func main() {
 
 	data := readFile("day04.in")
 	fmt.Println(part1(data))
+
+	assert(part2, i1, 4455)
+	fmt.Println(part2(data))
 }
