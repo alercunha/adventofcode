@@ -100,14 +100,14 @@ func findGuard(input string, compareFunc compare) int {
 }
 
 func part1(input string) interface{} {
-	f := func(entry1 *Entry, entry2 *Entry) bool { 
-		return entry1.asleepSum > entry2.asleepSum 
+	f := func(entry1 *Entry, entry2 *Entry) bool {
+		return entry1.asleepSum > entry2.asleepSum
 	}
 	return findGuard(input, f)
 }
 
 func part2(input string) interface{} {
-	f := func(entry1 *Entry, entry2 *Entry) bool { 
+	f := func(entry1 *Entry, entry2 *Entry) bool {
 		return entry1.asleepMostFrequently > entry2.asleepMostFrequently
 	}
 	return findGuard(input, f)
