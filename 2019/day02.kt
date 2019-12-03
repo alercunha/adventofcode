@@ -33,7 +33,7 @@ fun main() {
     assert(part1("2,4,4,5,99,0")[5] == 9801)
     assert(part1("1,1,1,4,99,5,6,0,99")[0] == 30)
 
-    var lines = File("day02-1.in").readLines()
+    var lines = File("day02.in").readLines()
     var c = lines[0].split(",").map{ it.toInt() } as MutableList<Int>
     c[1] = 12
     c[2] = 2
