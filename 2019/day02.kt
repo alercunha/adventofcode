@@ -6,15 +6,22 @@ fun part1(input: String): List<Int> {
 }
 
 fun _part1(c: MutableList<Int>): List<Int> {
-    var i = 0
-    while (c[i].toInt() != 99) {
-        var r = when (c[i]) {
-            1 -> c[c[i + 1]] + c[c[i + 2]]
-            2 -> c[c[i + 1]] * c[c[i + 2]]
-            else -> 0
+    var p = 0
+    while (c[p].toInt() != 99) {
+        var jump = 0
+        when (c[p]) {
+            1 -> {
+                c[c[p + 3]] = c[c[p + 1]] + c[c[p + 2]]
+                jump = 4
+            }
+            2 -> { 
+                c[c[p + 3]] = c[c[p + 1]] * c[c[p + 2]]
+                jump = 4
+            }
+            else -> {
+            }
         }
-        c[c[i + 3]] = r
-        i = i + 4
+        p = p + jump
     }
     return c
 }
@@ -32,4 +39,16 @@ fun main() {
     c[2] = 2
     var result = _part1(c)
     println(result[0])
+
+    for (noun in 0..99) {
+        for (verb in 0..99) {
+            c = lines[0].split(",").map{ it.toInt() } as MutableList<Int>
+            c[1] = noun
+            c[2] = verb
+            if (_part1(c)[0] == 19690720) {
+                println(100 * noun + verb)
+                return
+            }
+        }
+    }
 }
