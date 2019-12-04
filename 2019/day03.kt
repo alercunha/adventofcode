@@ -48,7 +48,7 @@ fun komp(a: Triple<Int, Int, Int>, b: Triple<Int, Int, Int>): Int {
     }
 }
 
-fun part1(input: List<String>): Int {
+fun calculate(input: List<String>, valFun: (a: Triple<Int, Int, Int>, b: Triple<Int, Int, Int>) -> Int): Int {
     var paths = calculatePaths(input)
     var match = ArrayList<Int>()
     var comp = Comparator<Triple<Int, Int, Int>>{a, b -> komp(a, b)}
@@ -58,29 +58,20 @@ fun part1(input: List<String>): Int {
         if (pair.first != 0 && pair.second != 0) {
             var found = secondPath.binarySearch(pair, comp)
             if (found >= 0) {
-                var dist = Math.abs(pair.first) + Math.abs(pair.second)
-                match.add(dist)
+                var v = valFun(pair, secondPath[found])
+                match.add(v)
             }
         }
     }
     return match.min()!!
 }
 
+fun part1(input: List<String>): Int {
+    return calculate(input, { a, _ -> Math.abs(a.first) + Math.abs(a.second) })
+}
+
 fun part2(input: List<String>): Int {
-    var paths = calculatePaths(input)
-    var match = ArrayList<Int>()
-    var comp = Comparator<Triple<Int, Int, Int>>{a, b -> komp(a, b)}
-    var firstPath = paths[0].sortedWith(comp)
-    var secondPath = paths[1].sortedWith(comp)
-    firstPath.forEach { pair ->
-        if (pair.first != 0 && pair.second != 0) {
-            var found = secondPath.binarySearch(pair, comp)
-            if (found >= 0) {
-                match.add(pair.third + secondPath[found].third)
-            }
-        }
-    }
-    return match.min()!!
+    return calculate(input, { a, b -> a.third + b.third })
 }
 
 fun main() {
