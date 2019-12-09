@@ -18,15 +18,16 @@ fun readParam(c: List<Int>, position: Int, mode: Char): Int {
 
 public fun intCode(c: MutableList<Int>, inputs: List<Int> = ArrayList<Int>()): List<Int> {
     var p = Program(c)
-    return p.run(inputs).first
+    p.run(inputs)
+    return p.output
 }
 
 public class Program(c: MutableList<Int>) {
+    var output = ArrayList<Int>()
     var p = 0
-    var o = ArrayList<Int>()
     var c = c
 
-    fun run(inputs: List<Int> = ArrayList<Int>()): Pair<List<Int>, Boolean> {
+    fun run(inputs: List<Int> = ArrayList<Int>()): Boolean {
         var inputQueue = ArrayDeque<Int>(inputs)
         while (c[p] != 99) {
             var code = c[p].toString()
@@ -45,13 +46,13 @@ public class Program(c: MutableList<Int>) {
                 }
                 3 -> {
                     if (inputQueue.peek() == null) {
-                        return Pair(o, false)
+                        return false
                     }
                     c[c[p + 1]] = inputQueue.poll()
                     jump = 2
                 }
                 4 -> {
-                    o.add(readParam(c, p + 1, modes[0]))
+                    output.add(readParam(c, p + 1, modes[0]))
                     jump = 2
                 }
                 5 -> {
@@ -81,6 +82,6 @@ public class Program(c: MutableList<Int>) {
             }
             p = p + jump
         }
-        return Pair(o, true)
+        return true
     }
 }

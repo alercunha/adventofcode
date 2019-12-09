@@ -14,9 +14,9 @@ fun thruster(program: String, size: Int, input: Int, phases: List<Int>): Int {
     var halted = false
     while (!halted) {
         var result = amps[pos].run(listOf(signal))
-        if (pos == size - 1 && result.second)
+        if (pos == size - 1 && result)
             halted = true
-        signal = result.first.last()
+        signal = amps[pos].output.last()
         pos = (pos + 1) % size
     }
     return signal
