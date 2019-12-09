@@ -1,76 +1,8 @@
+package day05
+
 import java.io.File
-import java.util.ArrayDeque
-import java.util.Queue
-
-fun split(input: String): MutableList<Int> {
-    return input.split(",").map{ it.toInt() } as MutableList<Int>
-}
-
-fun readParam(c: List<Int>, position: Int, mode: Char): Int {
-    if (mode == '0')
-        return c[c[position]]
-    else if (mode == '1')
-        return c[position]
-    else
-        return -1
-}
-
-fun intCode(c: MutableList<Int>, inputs: List<Int> = ArrayList<Int>()): List<Int> {
-    var p = 0
-    var o = ArrayList<Int>()
-    var inputQueue = ArrayDeque<Int>(inputs)
-    while (c[p] != 99) {
-        var code = c[p].toString()
-        var opcode = code.takeLast(2).toInt()
-        var modes = if (code.length <= 2) "" else code.slice(0..code.length-3)
-        modes = modes.padStart(3, '0').reversed()
-        var jump = 0
-        when (opcode) {
-            1 -> {
-                c[c[p + 3]] = readParam(c, p + 1, modes[0]) + readParam(c, p + 2, modes[1])
-                jump = 4
-            }
-            2 -> { 
-                c[c[p + 3]] = readParam(c, p + 1, modes[0]) * readParam(c, p + 2, modes[1])
-                jump = 4
-            }
-            3 -> {
-                c[c[p + 1]] = inputQueue.poll()
-                jump = 2
-            }
-            4 -> {
-                o.add(readParam(c, p + 1, modes[0]))
-                jump = 2
-            }
-            5 -> {
-                if (readParam(c, p + 1, modes[0]) != 0) {
-                    p = readParam(c, p + 2, modes[1])
-                } else {
-                    jump = 3
-                }
-            }
-            6 -> {
-                if (readParam(c, p + 1, modes[0]) == 0) {
-                    p = readParam(c, p + 2, modes[1])
-                } else {
-                    jump = 3
-                }
-            }
-            7 -> {
-                c[c[p + 3]] = if (readParam(c, p + 1, modes[0]) < readParam(c, p + 2, modes[1])) 1 else 0
-                jump = 4
-            }
-            8 -> {
-                c[c[p + 3]] = if (readParam(c, p + 1, modes[0]) == readParam(c, p + 2, modes[1])) 1 else 0
-                jump = 4
-            }
-            else -> {
-            }
-        }
-        p = p + jump
-    }
-    return o
-}
+import day05lib.split
+import day05lib.intCode
 
 fun main() {
     assert(intCode(split("1,11,12,3,2,3,13,0,4,0,99,30,40,50"))[0] == 3500)
