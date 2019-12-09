@@ -3,50 +3,50 @@ import day05lib.Program
 import day05lib.split
 
 fun thruster(program: String, size: Int, input: Int, phases: List<Int>): Int {
-	var amps = ArrayList<Program>()
-	(0..size-1).forEach{
-		var p = Program(split(program))
-		p.run(listOf(phases[it]))
-		amps.add(p)
-	}
-	var signal = input
-	var pos = 0
-	var halted = false
-	while (!halted) {
-		var result = amps[pos].run(listOf(signal))
-		if (pos == size - 1 && result.second)
-			halted = true
-		signal = result.first.last()
-		pos = (pos + 1) % size
-	}
-	return signal
+    var amps = ArrayList<Program>()
+    (0..size-1).forEach{
+        var p = Program(split(program))
+        p.run(listOf(phases[it]))
+        amps.add(p)
+    }
+    var signal = input
+    var pos = 0
+    var halted = false
+    while (!halted) {
+        var result = amps[pos].run(listOf(signal))
+        if (pos == size - 1 && result.second)
+            halted = true
+        signal = result.first.last()
+        pos = (pos + 1) % size
+    }
+    return signal
 }
 
 fun combine(start: Int, end: Int): Sequence<List<Int>> {
-	var seq = sequence {
-		(start..end).forEach{i0 -> 
-			(start..end).forEach{i1 -> 
-				(start..end).forEach{i2 -> 
-					(start..end).forEach{i3 -> 
-						(start..end).forEach{i4 -> 
-							var all = setOf(i0, i1, i2, i3, i4)
-							if (all.size == 5)
-								yield(listOf(i0, i1, i2, i3, i4))
-						}
-					}
-				}
-			}
-		}
-	}
-	return seq
+    var seq = sequence {
+        (start..end).forEach{i0 -> 
+            (start..end).forEach{i1 -> 
+                (start..end).forEach{i2 -> 
+                    (start..end).forEach{i3 -> 
+                        (start..end).forEach{i4 -> 
+                            var all = setOf(i0, i1, i2, i3, i4)
+                            if (all.size == 5)
+                                yield(listOf(i0, i1, i2, i3, i4))
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return seq
 }
 
 fun part1(program: String): Int? {
-	return combine(0, 4).map{ thruster(program, 5, 0, it) }.max()
+    return combine(0, 4).map{ thruster(program, 5, 0, it) }.max()
 }
 
 fun part2(program: String): Int? {
-	return combine(5, 9).map{ thruster(program, 5, 0, it) }.max()
+    return combine(5, 9).map{ thruster(program, 5, 0, it) }.max()
 }
 
 fun main() {
