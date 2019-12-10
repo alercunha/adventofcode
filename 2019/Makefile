@@ -45,3 +45,9 @@ day08.jar: day08.kt
 
 day08: day08.jar
 	java -ea -jar $<
+
+day09.jar: day09.kt day05-lib.kt
+	kotlinc $^ -include-runtime -d $@
+
+day09: day09.jar
+	java -ea -jar $<

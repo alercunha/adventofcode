@@ -1,11 +1,11 @@
 import java.io.File
 import day05lib.Program
-import day05lib.split
+import day05lib.splitLong
 
 fun thruster(program: String, size: Int, input: Int, phases: List<Int>): Int {
     var amps = ArrayList<Program>()
     (0..size-1).forEach{
-        var p = Program(split(program))
+        var p = Program(splitLong(program))
         p.run(listOf(phases[it]))
         amps.add(p)
     }
@@ -16,7 +16,7 @@ fun thruster(program: String, size: Int, input: Int, phases: List<Int>): Int {
         var result = amps[pos].run(listOf(signal))
         if (pos == size - 1 && result)
             halted = true
-        signal = amps[pos].output.last()
+        signal = amps[pos].lastOutputInt()
         pos = (pos + 1) % size
     }
     return signal
