@@ -10,16 +10,7 @@ fun angle(a: Pair<Int, Int>, b: Pair<Int, Int>): Double {
 }
 
 fun detect(station: Pair<Int, Int>, asteroids: List<Pair<Int, Int>>): Int {
-    var angles = HashSet<Double>()
-    var detected = 0
-    asteroids.forEach {
-        var angle = angle(station, it)
-        if (station != it && !angles.contains(angle)) {
-            detected++
-            angles.add(angle)
-        }
-    }
-    return detected
+    return asteroids.filter { it != station }.map { angle(station, it) }.toSet().size
 }
 
 fun toAsteroids(lines: List<String>): List<Pair<Int, Int>> {
