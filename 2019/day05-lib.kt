@@ -60,6 +60,10 @@ public class Program {
         return output.last().toInt()
     }
 
+    fun clearOutput() {
+        output = ArrayList<Long>()
+    }
+
     fun run(inputs: List<Int> = ArrayList<Int>()): Boolean {
         return runLong(inputs.map{it.toLong()})
     }
