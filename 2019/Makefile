@@ -63,3 +63,12 @@ day11.jar: day11.kt day05-lib.kt
 
 day11: day11.jar
 	java -ea -jar $<
+
+day12.jar: day12.kt
+	kotlinc $< -include-runtime -d $@
+
+day12: day12.jar
+	java -ea -jar $<
+
+clean:
+	-rm *.jar
