@@ -1,16 +1,13 @@
 import java.io.File
 
-class Space(positions: List<Triple<Int, Int, Int>>, velocities: List<Triple<Int, Int, Int>>? = null) {
+class Space(positions: List<List<Int>>, velocities: List<List<Int>>? = null) {
     var positions = positions
-    var velocities = if (velocities == null) positions.map{ Triple(0, 0, 0) } else velocities
+    var dimensions = positions[0].size
+    var velocities = if (velocities == null) positions.map{ (0..dimensions-1).map{ 0 } } else velocities
 
     fun energy(): Int {
         return (0..positions.size-1).map {
-            var pos = positions[it]
-            var vel = velocities[it]
-            var pot = Math.abs(pos.first) + Math.abs(pos.second) + Math.abs(pos.third)
-            var kin = Math.abs(vel.first) + Math.abs(vel.second) + Math.abs(vel.third)
-            pot * kin
+            positions[it].map{Math.abs(it)}.sum() * velocities[it].map{Math.abs(it)}.sum()
         }.sum()
     }
 
@@ -18,7 +15,7 @@ class Space(positions: List<Triple<Int, Int, Int>>, velocities: List<Triple<Int,
         var velocities = (0..positions.size-1).map {
             var j = positions[it]
             var vel = positions.filter{j != it}.map { i ->
-                Triple(vel(i.first, j.first), vel(i.second, j.second), vel(i.third, j.third))
+                (0..i.size-1).map{velocity(i[it], j[it])}
             }.reduce{a, b -> sumPos(a, b)}
             sumPos(vel, velocities[it])
         }
@@ -37,10 +34,6 @@ class Space(positions: List<Triple<Int, Int, Int>>, velocities: List<Triple<Int,
     }
 
     fun print() {
-
-    }
-
-    fun printArrays() {
         println(positions)
         println(velocities)
         println("energy: ${energy()}")
@@ -48,19 +41,18 @@ class Space(positions: List<Triple<Int, Int, Int>>, velocities: List<Triple<Int,
     }
 }
 
-fun vel(a: Int, b: Int): Int {
+fun velocity(a: Int, b: Int): Int {
     return if (a > b) +1 else if (a < b) -1 else 0
 }
 
-fun sumPos(a: Triple<Int, Int, Int>, b: Triple<Int, Int, Int>): Triple<Int, Int, Int> {
-    return Triple(a.first + b.first, a.second + b.second, a.third + b.third)
+fun sumPos(a: List<Int>, b: List<Int>): List<Int> {
+    return (0..a.size-1).map{a[it] + b[it]}
 }
 
-fun parse(input: List<String>): List<Triple<Int, Int, Int>> {
+fun parse(input: List<String>): List<List<Int>> {
     return input.map {
         var values = it.trim().drop(1).dropLast(1).split(",")
-        var map = values.map { it.trim().take(2) to it.trim().drop(2).toInt() }.toMap()
-        Triple(map.get("x=")!!, map.get("y=")!!, map.get("z=")!!)
+        values.map{it.trim().drop(2).toInt()}
     }
 }
 
