@@ -11,7 +11,7 @@ def part2(input):
     data = parse_input(input)
 
     def measure(i):
-        return data[i] + data[i + 1] + data[i + 2]
+        return sum(data[i:i+3])
 
     count = [1 if measure(i) > measure(i - 1) else 0 for i in range(1, len(data) - 2)]
     return sum(count)
