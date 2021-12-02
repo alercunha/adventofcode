@@ -18,7 +18,7 @@ def part2(input):
 
 
 if __name__ == '__main__':
-    example_input = """
+    example = """
     199
     200
     208
@@ -30,10 +30,10 @@ if __name__ == '__main__':
     260
     263
     """
-    assert part1(example_input) == 7
+    assert part1(example) == 7
     with open('day01.in', 'r') as fh:
-        day01_input = fh.read()
-    print(part1(day01_input))
+        input = fh.read()
+    print(part1(input))
 
-    assert part2(example_input) == 5
-    print(part2(day01_input))
+    assert part2(example) == 5
+    print(part2(input))
