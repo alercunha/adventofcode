@@ -1,13 +1,17 @@
 class Board:
     def __init__(self):
         self.matrix = [[None] * 5 for _ in range(5)]
+        self.won = False
 
     def set_value(self, x, y, num):
         self.matrix[y][x] = num
 
     def pop(self, x, y):
+        if self.won:
+            return False
         self.matrix[y][x] = None
-        return all(i is None for i in self.line(y)) or all(i is None for i in self.row(x))
+        self.won = all(i is None for i in self.line(y)) or all(i is None for i in self.row(x))
+        return self.won
 
     def line(self, y):
         for i in range(5):
@@ -55,16 +59,31 @@ def parse_input(input):
 
 
 def draw(draws, boards, draw_map):
-    for num in draws:
+    while len(draws) > 0:
+        num = draws.pop(0)
+        found = None
         for board_idx, x, y in draw_map[num]:
             board = boards[board_idx]
             if board.pop(x, y):
-                return board.sum_unmarked() * num
+                found = board
+        if found:
+            return found.sum_unmarked() * num
+    return None
 
 
 def part1(input):
     draws, boards, draw_map = parse_input(input)
     return draw(draws, boards, draw_map)
+
+
+def part2(input):
+    draws, boards, draw_map = parse_input(input)
+    score = draw(draws, boards, draw_map)
+    last = None
+    while score is not None:
+        last = score
+        score = draw(draws, boards, draw_map)
+    return last
 
 
 if __name__ == '__main__':
@@ -93,3 +112,6 @@ if __name__ == '__main__':
     with open('day04.in', 'r') as fh:
         input = fh.read()
     print(part1(input))
+
+    assert part2(example) == 1924
+    print(part2(input))
