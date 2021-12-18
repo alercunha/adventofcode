@@ -1,6 +1,3 @@
-from functools import reduce
-
-
 def parse_input(input):
     return [
         [
