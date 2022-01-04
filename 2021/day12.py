@@ -56,12 +56,13 @@ def part2(input):
     def valid_path(node, path):
         if node.name == 'start':
             return False
-        if 'end' in path:
+        if path[-1] == 'end':
             return False
         if node.small:
+            if node.name not in path:
+                return True
             c = Counter(path)
-            if any(v == 2 for k, v in c.items() if k[0].islower()):
-                return node.name not in path
+            return not any(v == 2 for k, v in c.items() if k[0].islower())
         return True
 
     paths = start.find_all_paths('end', valid_path)
