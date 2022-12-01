@@ -1,15 +1,6 @@
 def parse(input):
-    parsed = input.strip().split('\n')
-    elves = []
-    elf = []
-    for calorie in parsed:
-        if calorie == '':
-            elves.append(elf)
-            elf = []
-        else:
-            elf.append(int(calorie))
-    elves.append(elf)
-    return elves
+    parsed = [i.split('\n') for i in input.strip().split('\n\n')]
+    return [list(map(int, i)) for i in parsed]
 
 def count_calories(elf_calories):
     return sum(elf_calories)
