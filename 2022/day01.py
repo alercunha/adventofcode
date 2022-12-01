@@ -19,6 +19,12 @@ def part1(input):
     calories = [count_calories(i) for i in elves]
     return max(calories)
 
+def part2(input):
+    elves = parse(input)
+    calories = [count_calories(i) for i in elves]
+    calories.sort()
+    return sum(calories[-3:])
+
 if __name__ == '__main__':
     example1 = """
     1000
@@ -48,3 +54,7 @@ if __name__ == '__main__':
         input = fh.read()
 
     print(part1(input))
+
+    assert part2(example1) == 45000
+
+    print(part2(input))
