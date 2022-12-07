@@ -45,11 +45,12 @@ if __name__ == '__main__':
     ttgJtRGJQctTZtZT
     CrZsJsPPZsGzwwsLwLmpwMDw
     """
+
     parsed_example1 = parse(example1)
     assert parsed_example1[0] == list('vJrwpWtwJgWrhcsFMMfFFhFp')
     assert parsed_example1[1] == list('jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL')
 
-    assert part1(parse(example1)) == 157
+    assert part1(parsed_example1) == 157
 
     with open('day03.in', 'r') as fh:
         input = fh.read()

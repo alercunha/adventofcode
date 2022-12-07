@@ -37,6 +37,7 @@ if __name__ == '__main__':
     B X
     C Z
     """
+    
     assert parse(example1) == [['A', 'Y'], ['B', 'X'], ['C', 'Z']]
 
     assert part1(parse(example1)) == 15

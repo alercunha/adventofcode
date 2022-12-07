@@ -33,6 +33,7 @@ if __name__ == '__main__':
 
     10000
     """
+    
     assert parse(example1) == [[1000,2000,3000],[4000],[5000,6000],[7000,8000,9000],[10000]]
 
     assert count_calories(parse(example1)[0]) == 6000
